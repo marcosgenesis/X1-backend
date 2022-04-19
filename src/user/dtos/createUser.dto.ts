@@ -15,9 +15,17 @@ export default class CreateUserDTO {
   @IsNotEmpty()
   name: string;
 
+  @IsString()
+  @IsNotEmpty()
+  lastname: string;
+
   @IsNotEmpty()
   @IsEmail()
   email: string;
+
+  @IsString()
+  @IsNotEmpty()
+  nickname: string;
 
   @IsString()
   @MinLength(6)

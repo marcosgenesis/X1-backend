@@ -15,12 +15,13 @@ model User {
   name          String
   lastname      String
   email         String         @unique
+  nickname      String         @unique
   password      String
   refreshTokens RefreshToken[]
 
-  games     Games[] @relation("User")
-  winners   Games[] @relation("Winner")
-  oponnents Games[] @relation("Oponnent")
+  games     Game[] @relation("User")
+  winners   Game[] @relation("Winner")
+  oponnents Game[] @relation("Oponnent")
 
 }
 
@@ -33,13 +34,17 @@ model RefreshToken {
   updatedAt DateTime @updatedAt
 }
 
-model Games {
-  id         String  @id @default(uuid())
-  userId     String
-  user       User    @relation("User", fields: [userId], references: [id])
-  opponentId String
-  opponent   User    @relation("Oponnent", fields: [opponentId], references: [id])
-  winnerId   String?
-  winner     User?   @relation("Winner", fields: [winnerId], references: [id])
-  points     Int     @default(0)
+model Game {
+  id            String   @id @default(uuid())
+  date          DateTime @default(now())
+  userId        String
+  user          User     @relation("User", fields: [userId], references: [id])
+  opponentId    String
+  opponent      User     @relation("Oponnent", fields: [opponentId], references: [id])
+  winnerId      String?
+  winner        User?    @relation("Winner", fields: [winnerId], references: [id])
+  points        Int      @default(0)
+  userGoals     Int      @default(0)
+  opponentGoals Int      @default(0)
+  finished      Boolean  @default(false)
 }
