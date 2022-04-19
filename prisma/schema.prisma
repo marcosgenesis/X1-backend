@@ -12,10 +12,16 @@ datasource db {
 
 model User {
   id            String         @id @default(uuid())
-  name          String?
+  name          String
+  lastname      String
   email         String         @unique
   password      String
   refreshTokens RefreshToken[]
+
+  games     Games[] @relation("User")
+  winners   Games[] @relation("Winner")
+  oponnents Games[] @relation("Oponnent")
+
 }
 
 model RefreshToken {
@@ -25,4 +31,15 @@ model RefreshToken {
   expiresIn Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Games {
+  id         String  @id @default(uuid())
+  userId     String
+  user       User    @relation("User", fields: [userId], references: [id])
+  opponentId String
+  opponent   User    @relation("Oponnent", fields: [opponentId], references: [id])
+  winnerId   String?
+  winner     User?   @relation("Winner", fields: [winnerId], references: [id])
+  points     Int     @default(0)
 }
